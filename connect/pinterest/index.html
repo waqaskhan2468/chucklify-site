@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect Pinterest – Chucklify</title>
+<meta name="description" content="How Chucklify connects to Pinterest: what we request, what we post, and what we do with your account data.">
+<meta name="robots" content="noindex">
+<style>
+  :root{--ink:#2B2118;--cream:#FFF6E5;--marigold:#F6B23A;--coral:#F26B5B;--teal:#2A9D8F}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6}
+  main{max-width:760px;margin:0 auto;padding:48px 20px 80px}
+  h1{font-size:2rem;margin:0 0 6px}h2{font-size:1.15rem;margin:30px 0 8px}
+  .brand{font-weight:700;font-size:1.4rem;letter-spacing:-.02em}.brand span{color:var(--coral)}
+  .meta{opacity:.7;margin-bottom:24px}
+  a{color:var(--coral)}
+  .btn{display:inline-block;background:var(--coral);color:#fff;text-decoration:none;font-weight:700;border-radius:999px;padding:14px 26px;margin:14px 0}
+  .btn[aria-disabled="true"]{background:#c9b8a6;pointer-events:none}
+  .note{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:14px 18px;margin:16px 0}
+  ul{padding-left:20px}li{margin:6px 0}
+  code{background:#fff;border:1px solid #e3d5bd;border-radius:6px;padding:1px 6px}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">chuckl<span>ify</span></div>
+  <h1>Connect Pinterest</h1>
+  <p class="meta">Chucklify app for our own business account. Last updated 13 October 2026.</p>
+
+  <h2>What this connection does</h2>
+  <p>Chucklify publishes pins for our own product designs to our own Pinterest business account (<strong>@chucklify</strong>). Each pin links to a product page on chucklify.com, where the shirt, sweatshirt or mug can be bought on Etsy. The app also reads our own pin and board statistics (impressions, saves, clicks) to produce a weekly report.</p>
+  <p>The app is for one account only. It does not serve other Pinterest users and does not post on anyone else's behalf.</p>
+
+  <h2>What we request</h2>
+  <ul>
+    <li><code>boards:read</code> — list our boards so each pin goes to the right board.</li>
+    <li><code>pins:read</code> — read analytics for our own pins.</li>
+    <li><code>pins:write</code> — create our own pins.</li>
+    <li><code>user_accounts:read</code> — confirm the connected account is @chucklify.</li>
+  </ul>
+
+  <h2>How the connection works (OAuth 2.0)</h2>
+  <ol>
+    <li>Click <strong>Connect Pinterest</strong> below. You are sent to Pinterest's own sign-in and consent screen.</li>
+    <li>Sign in with the Pinterest account you want to connect and click <strong>Allow</strong>. We never see your password.</li>
+    <li>Pinterest redirects back to <code>chucklify.com/oauth/callback/</code> with a one-time authorization code.</li>
+    <li>The code is exchanged for an access token and a refresh token, which are stored as encrypted secrets used only by our publishing job. Tokens refresh automatically.</li>
+  </ol>
+  <p class="note">You can revoke the connection at any time in Pinterest under <em>Settings → Apps</em>. Doing so stops all automated pinning immediately.</p>
+
+  <a class="btn" id="connect" href="#" aria-disabled="true">Connect Pinterest</a>
+
+  <h2>Your data</h2>
+  <p>We store only the access and refresh tokens and the pin and board identifiers we created. We do not collect or sell personal data from Pinterest. See our <a href="/privacy/">privacy policy</a>.</p>
+  <p>Contact: <a href="mailto:hello@chucklify.com">hello@chucklify.com</a></p>
+</main>
+<script>
+  // Set this to the Pinterest App ID from developers.pinterest.com (an OAuth client ID, not a secret).
+  const PINTEREST_APP_ID = "PASTE_PINTEREST_APP_ID_HERE";
+  const REDIRECT = "https://chucklify.com/oauth/callback/";
+  const SCOPES = "boards:read,pins:read,pins:write,user_accounts:read";
+  if (PINTEREST_APP_ID && !PINTEREST_APP_ID.startsWith("PASTE")) {
+    const state = Array.from(crypto.getRandomValues(new Uint8Array(12)), b => b.toString(16).padStart(2, "0")).join("");
+    const url = "https://www.pinterest.com/oauth/?" + new URLSearchParams({client_id: PINTEREST_APP_ID, redirect_uri: REDIRECT, response_type: "code", scope: SCOPES, state});
+    const a = document.getElementById("connect"); a.href = url; a.setAttribute("aria-disabled", "false");
+  }
+</script>
+</body>
+</html>
