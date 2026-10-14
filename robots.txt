@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /review-assets/
+Disallow: /oauth/
 Sitemap: https://chucklify.com/sitemap.xml
