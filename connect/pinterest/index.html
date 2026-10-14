@@ -35,7 +35,7 @@
   <ul>
     <li><code>boards:read</code> — list our boards so each pin goes to the right board.</li>
     <li><code>pins:read</code> — read analytics for our own pins.</li>
-    <li><code>pins:write</code> — create our own pins.</li>
+    <li><code>pins:write</code> and <code>boards:write</code> — create our own pins on our own boards (Pinterest requires both for pin creation).</li>
     <li><code>user_accounts:read</code> — confirm the connected account is @chucklify.</li>
   </ul>
 
@@ -58,7 +58,7 @@
   // Set this to the Pinterest App ID from developers.pinterest.com (an OAuth client ID, not a secret).
   const PINTEREST_APP_ID = "1623439";
   const REDIRECT = "https://chucklify.com/oauth/callback/";
-  const SCOPES = "boards:read,pins:read,pins:write,user_accounts:read";
+  const SCOPES = "boards:read,boards:write,pins:read,pins:write,user_accounts:read";
   if (PINTEREST_APP_ID && !PINTEREST_APP_ID.startsWith("PASTE")) {
     const state = Array.from(crypto.getRandomValues(new Uint8Array(12)), b => b.toString(16).padStart(2, "0")).join("");
     const url = "https://www.pinterest.com/oauth/?" + new URLSearchParams({client_id: PINTEREST_APP_ID, redirect_uri: REDIRECT, response_type: "code", scope: SCOPES, state});
